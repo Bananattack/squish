@@ -1,4 +1,4 @@
-// Copyright (c) 2013 Andrew G. Crowell (Bananattack)
+// Copyright (c) 2013 Andrew G. Crowell (Overkill / Bananattack)
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without

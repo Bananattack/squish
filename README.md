@@ -1,11 +1,11 @@
 squish
 ======
-**by Andrew G. Crowell (Overkill)**
+**by Andrew G. Crowell (Overkill / Bananattack)**
 
 A simple lossless data compression library with very low memory footprint.
 
 
-    Copyright (c) 2013 Andrew G. Crowell (Bananattack)
+    Copyright (c) 2013 Andrew G. Crowell (Overkill / Bananattack)
     All rights reserved.
     
     Redistribution and use in source and binary forms, with or without
