@@ -31,7 +31,7 @@ private enum SQUISH_COMMAND_RLE8 = 0x1;
 private enum SQUISH_COMMAND_RLE16 = 0x2;
 private enum SQUISH_COMMAND_REF = 0x3;
 
-private size_t flush_raw(const ubyte[] raw, ref size_t raw_length, ref size_t output_position, ubyte[] dest)
+private size_t flush_raw(in ubyte[] raw, ref size_t raw_length, ref size_t output_position, ubyte[] dest)
 {
     if(raw_length > 0)
     {
