@@ -1,0 +1,63 @@
+package squish do
+    let SQUISH_LENGTH_MASK = 0x3F
+    let SQUISH_LENGTH_BITS = 6
+    let SQUISH_COMMAND_RAW = 0x0
+    let SQUISH_COMMAND_RLE8 = 0x1
+    let SQUISH_COMMAND_RLE16 = 0x2
+    let SQUISH_COMMAND_REF = 0x3
+
+    func unpack do
+        // Not tested yet, but should be close to real implementation!
+        // hl = source
+        // de = dest
+        loop
+            c = [hl] via a
+            c = c >> SQUISH_LENGTH_BITS
+            b = a & SQUISH_LENGTH_MASK via a
+            if compare a is zero then
+                return
+            end
+
+            a = c
+            if compare a to SQUISH_COMMAND_RAW is == then
+                loop
+                    [de] = [hl++] via a
+                    de++
+                    c--
+                until zero end
+            elseif compare a to SQUISH_COMMAND_RLE8 is == then
+                loop
+                    [de] = [hl] via a
+                    de++
+                    c--
+                until zero end
+                hl++
+            elseif compare a to SQUISH_COMMAND_RLE16 is == then
+                loop
+                    [de] = [hl++] via a
+                    de++
+                    [de] = [hl--] via a
+                    de++
+                    c--
+                until zero end
+                hl++
+                hl++
+            elseif compare a to SQUISH_COMMAND_REF is == then
+                push hl
+                a = [hl++]
+                h = [hl]
+                l = a
+
+                loop
+                    [de] = [hl++] via a
+                    de++
+                    c--
+                until zero end
+
+                pop hl
+                hl++
+                hl++      
+            end
+        end
+    end
+end

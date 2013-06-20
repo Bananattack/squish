@@ -1,0 +1,73 @@
+package squish do
+    let SQUISH_LENGTH_MASK = 0x3F
+    let SQUISH_LENGTH_BITS = 6
+    let SQUISH_COMMAND_RAW = 0x0
+    let SQUISH_COMMAND_RLE8 = 0x1
+    let SQUISH_COMMAND_RLE16 = 0x2
+    let SQUISH_COMMAND_REF = 0x3
+
+    func unpack do
+        // Not tested yet, but should be close to real implementation!
+        // Arguments:
+        // [0], [1] = 16-bit src pointer
+        // [2], [3] = 16-bit dest pointer
+        // Locals:
+        // [4], [5] = temporary 16-bit backref pointer.
+        let src = 0
+        let dest = 2
+        let ref = 4
+
+        y = 0
+        loop
+            x = [[src]:y] & SQUISH_LENGTH_MASK via a
+            if is zero then
+                return
+            end
+
+            a = [[src]:y] >> SQUISH_LENGTH_BITS
+            if compare a to SQUISH_COMMAND_RAW is == then
+                [src]++ if zero then [src + 1]++ end
+                loop
+                    [[dest]:y] = [[src]:y] via a
+                    [src]++ if zero then [src + 1]++ end
+                    [dest]++ if zero then [dest + 1]++ end
+                    x--
+                until zero end
+            elseif compare a to SQUISH_COMMAND_RLE8 is == then
+                [src]++ if zero then [src + 1]++ end
+                loop
+                    [[dest]:y] = [[src]:y] via a
+                    [dest]++ if zero then [dest + 1]++ end
+                    x--
+                until zero end
+                [src]++ if zero then [src + 1]++ end
+            elseif compare a to SQUISH_COMMAND_RLE16 is == then
+                [src]++ if zero then [src + 1]++ end
+                loop
+                    [[dest]:y] = [[src]:y] via a
+                    [dest]++ if zero then [dest + 1]++ end
+                    y++
+                    a = [[src]:y]
+                    y--
+                    [[dest]:y] = a
+                    [dest]++ if zero then [dest + 1]++ end
+                    x--
+                until zero end
+                [src]++ if zero then [src + 1]++ end
+                [src]++ if zero then [src + 1]++ end
+            elseif compare a to SQUISH_COMMAND_REF is == then
+                [src]++ if zero then [src + 1]++ end
+                [ref] = [[src]:y] via a
+                [src]++ if zero then [src + 1]++ end
+                [ref + 1] = [[src]:y] via a
+                [src]++ if zero then [src + 1]++ end
+                loop
+                    [[dest]:y] = [[ref]:y] via a
+                    [ref]++ if zero then [ref + 1]++ end
+                    [dest]++ if zero then [dest + 1]++ end
+                    x--
+                until zero end
+            end
+        end
+    end
+end
