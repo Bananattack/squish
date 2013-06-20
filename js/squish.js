@@ -125,7 +125,6 @@ var squish = (function(lib) {
             var command = (src[input_position++] & 0xFF) >> SQUISH_LENGTH_BITS;
 
             if(length == 0) {
-                console.log(dest);
                 return dest;
             }
             switch(command) {
@@ -157,7 +156,6 @@ var squish = (function(lib) {
                 default: assert(0);
             }
         }
-        console.log(dest);
         return dest;
     }
 
