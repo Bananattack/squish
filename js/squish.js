@@ -153,7 +153,7 @@ var squish = (function(lib) {
                     }
                     input_position += 2;
                     break;
-                default: assert(0);
+                default: throw new Error("unhandled command type");
             }
         }
         return dest;
