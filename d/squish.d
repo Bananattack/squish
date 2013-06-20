@@ -31,13 +31,13 @@ private enum SQUISH_COMMAND_RLE8 = 0x1;
 private enum SQUISH_COMMAND_RLE16 = 0x2;
 private enum SQUISH_COMMAND_REF = 0x3;
 
-private size_t flush_raw(in ubyte[] raw, ref size_t raw_length, ref size_t output_position, ubyte[] dest)
+private bool flush_raw(in ubyte[] raw, ref size_t raw_length, ref size_t output_position, ubyte[] dest)
 {
     if(raw_length > 0)
     {
         if(output_position + 1 + raw_length > dest.length)
         {
-            return 0;
+            return false;
         }
 
         dest[output_position++] = cast(ubyte) (raw_length | (SQUISH_COMMAND_RAW << SQUISH_LENGTH_BITS));
@@ -47,7 +47,7 @@ private size_t flush_raw(in ubyte[] raw, ref size_t raw_length, ref size_t outpu
         }
         raw_length = 0;
     }
-    return 1;
+    return true;
 }
 
 size_t pack(in ubyte[] src, ubyte[] dest)

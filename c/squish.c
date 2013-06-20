@@ -35,7 +35,7 @@ enum {
     SQUISH_COMMAND_REF = 0x3,
 };
 
-static size_t flush_raw(const uint8_t *raw, size_t *raw_length, size_t *output_position, uint8_t *dest, size_t dest_length) {
+static char flush_raw(const uint8_t *raw, size_t *raw_length, size_t *output_position, uint8_t *dest, size_t dest_length) {
     size_t i;
     size_t p = *output_position;
     size_t rl = *raw_length;
