@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+    <title>squish</title>
+    <script type='text/javascript' src='squish.js'></script>
+</head>
+<body>
+    <h1>squish</h1>
+    <p>Input:</p><textarea class='input'></textarea><input type='submit' class='update' value='Test' />
+    <p>Alternatively, get a file <input type='file' class='file' value='' /></p>
+    <p>Statistics:</p><pre class='statistics'></pre>
+    <p>Uncompressed:</p><pre class='uncompressed'></pre>
+    <p>Compressed:</p><pre class='compressed'></pre>
+    <p>Decompressed:</p><pre class='decompressed'></pre>
+    <script type='text/javascript'>
+        function update(src) {
+            var statistics = document.querySelector('.statistics');
+            var uncompressed = document.querySelector('.uncompressed');
+            var compressed = document.querySelector('.compressed');
+            var decompressed = document.querySelector('.decompressed');
+
+            var packed = squish.pack(src);
+            statistics.innerHTML = 'source: ' + src.length + '\n'
+                + 'dest: ' + packed.length + '\n'
+                + 'ratio: ' + (packed.length * 100 / src.length) + '%\n';
+            uncompressed.innerHTML = src.join(',');
+            compressed.innerHTML = packed.join(',');
+
+            var unpacked = squish.unpack(packed);
+            decompressed.innerHTML = unpacked.join(',');
+        }
+
+        document.querySelector('.update').onclick = function() {
+            var value = document.querySelector('.input').value;
+            var src = [];
+            for(var i = 0; i < value.length; i++) {
+                src.push(value.charCodeAt(i));
+            }
+            update(src);
+        }
+
+
+        document.querySelector('.file').onchange = function(e) {
+            var files = event.target.files;
+            if(files.length) {
+                var file = files[0];
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var value = event.target.result;
+                    var src = [];
+                    for(var i = 0; i < value.length; i++) {
+                        src.push(value.charCodeAt(i));
+                    }
+                    update(src);
+                };
+                reader.readAsBinaryString(file);
+            }
+
+        }
+
+
+
+    </script>
+</body>
+</html>
