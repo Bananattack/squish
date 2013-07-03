@@ -39,18 +39,16 @@ void main()
     f.seek(0, std.stdio.SEEK_SET);
     f.rawRead(src);
 
-    auto compressed_size = squish.pack(src, compressed);
-    compressed.length = compressed_size;
+    compressed.length = squish.pack(src, compressed);
     f = std.stdio.File("squish.compressed.d", "wb");
     f.rawWrite(compressed);
 
-    auto decompressed_size = squish.unpack(compressed, decompressed);
-    decompressed.length = decompressed_size;
+    decompressed.length = squish.unpack(compressed, decompressed);
     f = std.stdio.File("squish.decompressed.d", "wb");
     f.rawWrite(decompressed);
 
     std.stdio.writefln("src: %s byte(s)", src.length);
-    std.stdio.writefln("compressed: %s byte(s)", compressed_size);
-    std.stdio.writefln("ratio: %s%% of original size", compressed_size * 100 / src.length);
-    std.stdio.writefln("decompressed: %s byte(s)", decompressed_size);
+    std.stdio.writefln("compressed: %s byte(s)", compressed.length);
+    std.stdio.writefln("ratio: %s%% of original size", compressed.length * 100 / src.length);
+    std.stdio.writefln("decompressed: %s byte(s)", decompressed.length);
 }
