@@ -29,24 +29,24 @@ static import squish;
 
 void main()
 {
-    ubyte[4096] src;
-    ubyte[] compressed = new ubyte[4096];
-    ubyte[] decompressed = new ubyte[4096];
-    size_t compressed_size;
-    size_t decompressed_size;
-    size_t i;
+    ubyte[] src;
+    ubyte[] compressed;
+    ubyte[] decompressed;
 
-    auto f = std.stdio.File("a.chr", "rb");
+    auto f = std.stdio.File("squish.d", "rb");
+    f.seek(0, std.stdio.SEEK_END);
+    decompressed.length = compressed.length = src.length = cast(typeof(src.length)) f.tell();
+    f.seek(0, std.stdio.SEEK_SET);
     f.rawRead(src);
 
-    compressed_size = squish.pack(src, compressed);
+    auto compressed_size = squish.pack(src, compressed);
     compressed.length = compressed_size;
-    f = std.stdio.File("a.compressed.chr", "wb");
+    f = std.stdio.File("squish.compressed.d", "wb");
     f.rawWrite(compressed);
 
-    decompressed_size = squish.unpack(compressed, decompressed);
+    auto decompressed_size = squish.unpack(compressed, decompressed);
     decompressed.length = decompressed_size;
-    f = std.stdio.File("a.decompressed.chr", "wb");
+    f = std.stdio.File("squish.decompressed.d", "wb");
     f.rawWrite(decompressed);
 
     std.stdio.writefln("src: %s byte(s)", src.length);
