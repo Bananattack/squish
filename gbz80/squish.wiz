@@ -23,13 +23,13 @@ package squish do
                 loop
                     [de] = [hl++] via a
                     de++
-                    c--
+                    b--
                 until zero end
             elseif compare a to SQUISH_COMMAND_RLE8 is == then
                 loop
                     [de] = [hl] via a
                     de++
-                    c--
+                    b--
                 until zero end
                 hl++
             elseif compare a to SQUISH_COMMAND_RLE16 is == then
@@ -38,7 +38,7 @@ package squish do
                     de++
                     [de] = [hl--] via a
                     de++
-                    c--
+                    b--
                 until zero end
                 hl++
                 hl++
@@ -51,7 +51,7 @@ package squish do
                 loop
                     [de] = [hl++] via a
                     de++
-                    c--
+                    b--
                 until zero end
 
                 pop hl
