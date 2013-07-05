@@ -4,6 +4,27 @@ squish
 
 A simple lossless data compression library with very low memory footprint.
 
+* Compress files of up to 64K. (Designed with embedded systems with 16-bit address space in mind.)
+* Libraries for C, D, JavaScript, 6502 and GBZ80.
+* Mixes simplistic compression algorithms that require very little intermediate state during decompression.
+
+Specification
+-------------
+
+* The **squish** compression format is a stream containing 0 or more sequences of the following data:  
+  ```<header> <payload>```
+* Each *header* is an 8-bit byte that contains a 6-bit *length* component and a 2-bit *command* component:  
+  ```<header> = ((<command> & 3) << 6) | (<length> & 0x3F)```    
+* The *payload* format is determined by the *command* in the header:
+  * `raw = 0` - Sequence of uncompressed bytes of indicated *length*.
+  * `rle8 = 1` - Single byte, to be unpacked *length* times.
+  * `rle16 = 2` - Two-byte pattern, to be unpacked *length* times.
+  * `ref = 3` - Reference to data earlier in the unpacked stream, a two-byte value specifying an offset in bytes from the beginning of the stream. The amount of bytes being referenced is of the indicated *length*.
+* A header byte that has a *length* of zero is considered an end-of-file marker.
+
+License
+-------
+
 
     Copyright (c) 2013 Andrew G. Crowell (Overkill / Bananattack)
     All rights reserved.
