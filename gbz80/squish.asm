@@ -31,7 +31,7 @@ SQUISH_COMMAND_RLE8     EQU $1
 SQUISH_COMMAND_RLE16    EQU $2
 SQUISH_COMMAND_REF      EQU $3
 
-; squish_unpack previously packed source data at [hl] into the given destination buffer at [de].
+; Unpack previously packed source data at [hl] into the given destination buffer at [de].
 ; Arguments:
 ;   hl = source
 ;   de = dest
