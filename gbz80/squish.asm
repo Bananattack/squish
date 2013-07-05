@@ -72,7 +72,7 @@ squish_unpack:
 .check_rle8:
     cp a, SQUISH_COMMAND_RLE8
     ; If not, skip.
-    jr nz, .check_rle8
+    jr nz, .check_rle16
 .rle8_loop:
     ld a, [hl]
     ld [de], a
